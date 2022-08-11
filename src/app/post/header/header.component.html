@@ -1,0 +1,9 @@
+<header class="header">
+  <h1> Albums</h1>
+  <button class="header__buttons" (click)="addItem()" [disabled]="isOpen">
+    <fa-icon [icon]="faPlusCircle" alt="Edit Album"></fa-icon>
+  </button>
+</header>
+<div @fade *ngIf="isOpen">
+<app-edit-list [album]="album" [isEdit]="false" (closeEvent)="closeItem($event)"></app-edit-list>
+</div>

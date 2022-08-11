@@ -1,0 +1,50 @@
+.item {
+  height: auto;
+  margin-bottom: 1rem;
+  position: relative;
+  @apply flex flex-row items-center w-full border-b-2 border-b-primary pb-2;
+  &__img {
+    height: 5rem;
+  }
+  &__info {
+
+    padding-left: 1.5rem;
+    h3 {
+      @apply text-secondary m-0 font-semibold text-lg;
+    }
+    p {
+      @apply text-xs
+    }
+  }
+  &__icons {
+    align-self: flex-start;
+    position: absolute;
+    right: 10px;
+    display: flex;
+    gap: 10px;
+  }
+  &__buttons {
+    cursor: pointer;
+    &:disabled {
+      fa-icon {
+        @apply text-disabled-gray;;
+        cursor:default;
+        &:hover {
+          @apply text-disabled-gray;
+        }
+      }
+    }
+    fa-icon {
+      @apply text-secondary;
+
+      &:hover {
+        @apply text-secondary-accent;
+      }
+    }
+  }
+  h2 {
+    align-self: flex-start;
+    padding-right: 1rem;
+    @apply text-primary font-bold text-lg;
+  }
+}

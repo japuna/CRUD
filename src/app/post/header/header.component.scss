@@ -1,0 +1,19 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  h1, fa-icon {
+    @apply text-5xl text-primary;
+  }
+  fa-icon {
+    @apply text-3xl;
+    &:hover {
+      @apply text-secondary;
+    }
+    &:disabled {
+      @apply text-disabled-gray;
+    }
+  }
+
+}

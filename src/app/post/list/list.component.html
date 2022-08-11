@@ -1,0 +1,8 @@
+<div class="list">
+  <app-header></app-header>
+  <div  class="list__card">
+    <ng-container *ngFor="let album of albums; index as i">
+      <app-item *ngIf="album.title" [album]="album" [index]="i"></app-item>
+    </ng-container>
+  </div>
+</div>
