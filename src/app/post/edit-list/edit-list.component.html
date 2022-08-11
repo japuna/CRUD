@@ -1,0 +1,28 @@
+<form class="form"[formGroup]="form" (ngSubmit)="onSubmit()">
+  <button type="button" class="form__close" (click)="onClose()">
+    <fa-icon [icon]="faTrashCan"></fa-icon>
+  </button>
+  <h2 class="text-lg text-light-gray mb-4">{{isEdit ? 'Editing ' + title?.value : "New Album"}}</h2>
+  <div class="form__container">
+    <label>Title</label>
+    <input id="title" name="title" type="text" formControlName="title"/>
+    <p *ngIf=" title && title.invalid && (title.dirty || title.touched)" class="text-warning">A title is required</p>
+  </div>
+  <div class="form__container">
+    <label>Artist</label>
+    <input id="artist" type="text" formControlName="artist"/>
+    <p *ngIf=" artist && artist.invalid && (artist.dirty || artist.touched)" class="text-warning">An artist is required</p>
+  </div>
+  <div class="form__container">
+    <label>Songs</label>
+    <input id="songs" type="text" formControlName="songs"/>
+    <p *ngIf=" songs && songs.invalid && (songs.dirty || songs.touched)"  class="text-warning">At least a song is required</p>
+  </div>
+  <div class="form__container">
+    <label>URL Image</label>
+    <input id="image" type="text" formControlName="image"/>
+  </div>
+  <div class="form__container">
+    <button class="form__submit" type="submit" [disabled]="!form.valid">Change</button>
+  </div>
+</form>
