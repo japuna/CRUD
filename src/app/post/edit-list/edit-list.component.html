@@ -1,4 +1,4 @@
-<form class="form"[formGroup]="form" (ngSubmit)="onSubmit()">
+<form  *ngIf="!isSubmit"  class="form"[formGroup]="form" (ngSubmit)="onSubmit()">
   <button type="button" class="form__close" (click)="onClose()">
     <fa-icon [icon]="faTrashCan"></fa-icon>
   </button>
@@ -26,3 +26,5 @@
     <button class="form__submit" type="submit" [disabled]="!form.valid">Change</button>
   </div>
 </form>
+<app-alert class="" *ngIf="isSubmit" [title]="album.title" action="created">
+</app-alert>

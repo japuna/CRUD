@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Album } from './album';
-import { take, map } from 'rxjs/operators';
+import { take, map, tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -49,5 +49,52 @@ export class AlbumsService {
     this.albums.pipe(take(1)).subscribe(albums =>{
       this._albums.next(albums.concat(newAlbum));
     })
+
   }
+  editAlbum(id:string,title:string, artist: string, songs: string, URL:string) {
+    this.albums.pipe(take(1)).subscribe(albums =>{
+      const index = albums.findIndex(album => album.id ===id);
+      const updatedAlbums = [...albums];
+      updatedAlbums[index] = {
+        id: id,
+        title: title,
+        artist: artist,
+        songs: songs,
+        URLImage: URL
+      }
+      this._albums.next(updatedAlbums);
+    })
+
+  }
+
+  deleteAlbum(id:string) {
+    this.albums.pipe(take(1)).subscribe(albums =>{
+      const index = albums.findIndex(album => album.id ===id);
+      const updatedAlbums = albums.filter(album => album.id !== id);
+      this._albums.next(updatedAlbums);
+    });
+  }
+
+  // updatePlace(placeId: string, title: string, description: string) {
+
+  //   this.albums.pipe(
+  //     take(1),
+  //     tap(albums => {
+  //       const updatedPlaceIndex = albums.findIndex(pl => pl.id === placeId);
+  //       const updatedPlaces = [...albums];
+  //       const oldPlace = updatedPlaces[updatedPlaceIndex];
+  //       updatedPlaces[updatedPlaceIndex] = new Album(
+  //         oldPlace.id,
+  //         title,
+  //         description,
+  //         oldPlace.imageUrl,
+  //         oldPlace.price,
+  //         oldPlace.availableFrom,
+  //         oldPlace.availableTo,
+  //         oldPlace.userId
+  //       );
+  //       this._places.next(updatedPlaces);
+  //     })
+  //   );
+  // }
 }

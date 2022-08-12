@@ -12,6 +12,7 @@ import { AlbumsService } from '../albums.service';
   styleUrls: ['./edit-list.component.scss']
 })
 export class EditListComponent implements OnInit {
+  public isSubmit = false;
   public form: FormGroup = new FormGroup({});
   public faTrashCan = faXmark;
   @Input() album: Album ={
@@ -56,14 +57,40 @@ export class EditListComponent implements OnInit {
     }
   }
   onSubmit() {
-    if(!this.isEdit && this.form.valid){
-      this.albumService.addAlbum(
-        this.title!.value,
-        this.artist!.value,
-        this.songs!.value,
-        this.image!.value
-      )
+    if(!this.form.valid) {
+      return;
     }
+    if(!this.isEdit){
+      this.submitNew();
+    }
+    if(this.isEdit && this.album.id) {
+      this.submitEdit();
+    }
+  }
+  submitNew() {
+    console.log("new");
+    this.albumService.addAlbum(
+      this.title!.value,
+      this.artist!.value,
+      this.songs!.value,
+      this.image!.value
+    )
+    this.isSubmit = true;
+    setTimeout(()=>{
+      this.closeEvent.emit(false);
+      this.isSubmit = false;
+    },2000)
+  }
+
+  submitEdit() {
+    console.log("load");
+    this.albumService.editAlbum(
+      this.album.id,
+      this.title!.value,
+      this.artist!.value,
+      this.songs!.value,
+      this.image!.value
+    )
   }
 
   onClose() {
