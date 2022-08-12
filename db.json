@@ -1,4 +1,5 @@
-[
+{
+   "albums":[
       {
          "id":"hola2",
          "title":"Jagged Little Pill",
@@ -13,4 +14,5 @@
          "songs":"Album, Rompecabezas, Luto",
          "URLImage":"https://i.pinimg.com/564x/a8/9c/37/a89c37ca3d8526ddd290b38a546e11ea.jpg"
       }
-  ]
+    ]
+}
