@@ -1,14 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Album, defaultImage } from '../album';
 import { faPenToSquare, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { fade } from '../animation';
+import { fade, Item} from '../animation';
+import { AlbumsService } from '../albums.service';
 
 @Component({
   selector: 'app-item',
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.scss'],
   animations: [
-    fade
+    fade,
+    Item
   ]
 })
 export class ItemComponent implements OnInit {
@@ -25,7 +27,7 @@ export class ItemComponent implements OnInit {
   @Input() isOpen: boolean = false;
   @Input() index: number = 0;
 
-  constructor() { }
+  constructor( private albumsServices:AlbumsService) { }
 
   ngOnInit(): void {
   }
@@ -35,11 +37,13 @@ export class ItemComponent implements OnInit {
   }
   deleteItem() {
     console.log("deleting...");
+    this.albumsServices.deleteAlbum(this.album.id);
   }
 
   closeItem(b:boolean) {
     console.log("Closing form...");
     this.isOpen = false;
+
   }
 
 }
