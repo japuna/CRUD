@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Album } from '../album';
+import { AlbumsService } from '../albums.service';
 
 @Component({
   selector: 'app-list',
@@ -7,32 +9,22 @@ import { Album } from '../album';
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
-  public albums: Album[] = [{
-    id: 'hola2',
-    title: 'Jagged Little Pill',
-    artist: 'Alanis Morissette',
-    songs: 'You Oughta Know, Ironic, Perfect',
-    URLImage: 'https://www.lahiguera.net/musicalia/artistas/alanis_morissette/disco/10630/portada-p.jpg'
-  },
-  {
-    id: 'hola1',
-    title: 'Gozo Poderoso',
-    artist: 'Aterciopelados',
-    songs: 'Album, Rompecabezas, Luto',
-    URLImage: 'https://i.pinimg.com/564x/a8/9c/37/a89c37ca3d8526ddd290b38a546e11ea.jpg'
-  },
-  {
-    id: '',
-    title: '',
-    artist: '',
-    songs: '',
-    URLImage: ''
-  }
-];
-  constructor() { }
+  public albums: Album[] = [];
+  private albumSub: Subscription | undefined
+
+  constructor(private albumsServices: AlbumsService) { }
 
   ngOnInit(): void {
-    console.log(this.albums);
+    this.albumSub = this.albumsServices.albums.subscribe(
+      albums => {
+        this.albums= albums;
+      }
+    )
+  }
+  ngOnDestroy(): void {
+    if(this.albumSub) {
+      this.albumSub.unsubscribe();
+    }
   }
 
 }
