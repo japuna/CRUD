@@ -1,20 +1,31 @@
 {
   "albums": [
-    { 
-      'id': 'hola2',
-      'title': 'Jagged Little Pill',
-      'artist': 'Alanis Morissette',
-      'songs': 'You Oughta Know, Ironic, Perfect',
-      'URLImage': 'https://www.lahiguera.net/musicalia/artistas/alanis_morissette/disco/10630/portada-p.jpg'
+    {
+      "id": "hola2",
+      "title": "Jagged Little Pill",
+      "artist": "Alanis Morissette 1",
+      "songs": "You Oughta Know, Ironic, Perfect",
+      "URLImage": "https://www.lahiguera.net/musicalia/artistas/alanis_morissette/disco/10630/portada-p.jpg"
     },
     {
-      'id': 'hola1',
-      'title': 'Gozo Poderoso',
-      'artist': 'Aterciopelados',
-      'songs': 'Album, Rompecabezas, Luto',
-      'URLImage': 'https://i.pinimg.com/564x/a8/9c/37/a89c37ca3d8526ddd290b38a546e11ea.jpg'
+      "id": "hola1",
+      "title": "Gozo Poderoso",
+      "artist": "Aterciopelados",
+      "songs": "Album, Rompecabezas, Luto",
+      "URLImage": "https://i.pinimg.com/564x/a8/9c/37/a89c37ca3d8526ddd290b38a546e11ea.jpg"
     },
+    {
+      "id": "3443.1944045824494",
+      "title": "Dangerous",
+      "artist": "asdasd",
+      "songs": "asdasd"
+    },
+    {
+      "id": "1880.025588516514",
+      "title": "thriller",
+      "artist": "Michael JAckson",
+      "songs": "werwer",
+      "URLImage": ""
+    }
   ]
 }
-
-  

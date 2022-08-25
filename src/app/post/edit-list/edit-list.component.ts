@@ -39,7 +39,9 @@ export class EditListComponent implements OnInit {
         updateOn: 'blur',
         validators: [Validators.required]
       }),
-      image: new FormControl(''),
+      image: new FormControl('',{
+      validators: [Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
+      })
     });
   }
 
@@ -57,7 +59,7 @@ export class EditListComponent implements OnInit {
     }
   }
   onSubmit() {
-    if(!this.form.valid) {
+    if(!this.form.valid || this.form.untouched) {
       return;
     }
     if(!this.isEdit){
@@ -66,31 +68,26 @@ export class EditListComponent implements OnInit {
     if(this.isEdit && this.album.id) {
       this.submitEdit();
     }
-  }
-  submitNew() {
-    console.log("new");
-    this.albumService.addAlbum(
-      this.title!.value,
-      this.artist!.value,
-      this.songs!.value,
-      this.image!.value
-    )
     this.isSubmit = true;
     setTimeout(()=>{
       this.closeEvent.emit(false);
       this.isSubmit = false;
     },2000)
   }
+  submitNew() {
+    console.log("new");
+    this.albumService.addAlbum(
+    this.title!.value,
+    this.artist!.value,
+    this.songs!.value,
+    this.image!.value
+    )
+
+  }
 
   submitEdit() {
     console.log("load");
-    this.albumService.editAlbum(
-      this.album.id,
-      this.title!.value,
-      this.artist!.value,
-      this.songs!.value,
-      this.image!.value
-    )
+    this.albumService.editAlbum(this.album.id, this.title!.value, this.artist!.value, this.songs!.value, this.image!.value);
   }
 
   onClose() {

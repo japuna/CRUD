@@ -1,100 +1,114 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { take, map, tap, catchError } from 'rxjs/operators';
 import { Album } from './album';
-import { take, map, tap } from 'rxjs/operators';
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class AlbumsService {
-  private _albums = new BehaviorSubject<Album[]>([{
-    id: 'hola2',
-    title: 'Jagged Little Pill',
-    artist: 'Alanis Morissette',
-    songs: 'You Oughta Know, Ironic, Perfect',
-    URLImage: 'https://www.lahiguera.net/musicalia/artistas/alanis_morissette/disco/10630/portada-p.jpg'
-  },
-  {
-    id: 'hola1',
-    title: 'Gozo Poderoso',
-    artist: 'Aterciopelados',
-    songs: 'Album, Rompecabezas, Luto',
-    URLImage: 'https://i.pinimg.com/564x/a8/9c/37/a89c37ca3d8526ddd290b38a546e11ea.jpg'
-  },
-  {
-    id: '',
-    title: '',
-    artist: '',
-    songs: '',
-    URLImage: ''
-  }
-  ]);
+  private apiURL = "http://localhost:3000/albums";
 
-  constructor() { }
+  private headers = new Headers({ 'content-type': 'application/json' })
+  private _albums = new BehaviorSubject<Album[]>([]);
+  private albumsList: Album[] = [];
 
-  get albums() {
+
+  constructor(private httpClient: HttpClient) { }
+
+
+  get albums():Observable<Album[]> {
     return this._albums.asObservable();
   }
 
-  addAlbum(title:string, artist: string, songs: string, URL:string) {
-    const idAux:string = Math.random.toString();
+  set albumsData(data:Album[]){
+    this._albums.next(data);
+  }
+
+  getAll() {
+    this.httpClient.get<Album[]>(this.apiURL).subscribe(albums => {
+      this.albumsData = albums;
+      this.albums.subscribe(albums => {
+        this.albumsList = albums;
+      })
+    })
+  };
+
+
+  addAlbum (title:string, artist: string, songs: string, URL:string) {
+    const idAux:string = (10000 * Math.random()).toString();
+    console.log(idAux);
 
     const newAlbum: Album = {
-      id: 'idAux',
+      id: idAux,
       title: title,
       artist: artist,
       songs: songs,
       URLImage: URL
     }
+    this.albums.subscribe(albums => this.albumsList = albums);
+    this.albumsList.push(newAlbum);
+    this.albumsData = this.albumsList;
 
-    this.albums.pipe(take(1)).subscribe(albums =>{
-      this._albums.next(albums.concat(newAlbum));
-    })
 
-  }
-  editAlbum(id:string,title:string, artist: string, songs: string, URL:string) {
-    this.albums.pipe(take(1)).subscribe(albums =>{
-      const index = albums.findIndex(album => album.id ===id);
-      const updatedAlbums = [...albums];
-      updatedAlbums[index] = {
-        id: id,
-        title: title,
-        artist: artist,
-        songs: songs,
-        URLImage: URL
-      }
-      this._albums.next(updatedAlbums);
-    })
+    var requestOptions = {
+      method: 'POST',
+      headers: this.headers,
+      body: JSON.stringify(newAlbum),
+    };
 
+    fetch(this.apiURL, requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+      return this.httpClient.post<any>(this.apiURL, newAlbum).pipe(
+        map((res:any)=> {
+          return res;
+        })
+      )
   }
 
   deleteAlbum(id:string) {
-    this.albums.pipe(take(1)).subscribe(albums =>{
-      const index = albums.findIndex(album => album.id ===id);
-      const updatedAlbums = albums.filter(album => album.id !== id);
-      this._albums.next(updatedAlbums);
-    });
+
+    var requestOptions = {
+      method: 'DELETE',
+      headers: this.headers,
+    };
+
+    fetch(this.apiURL + '/' +id, requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        this.albums.subscribe(albums =>{
+          this.albumsList = albums.filter(album => album.id !== id);
+        })
+        this.albumsData = this.albumsList;
+      })
+      .catch(error => console.log('error', error));
   }
+  editAlbum(id:string, title:string, artist: string, songs: string, URL:string) {
 
-  // updatePlace(placeId: string, title: string, description: string) {
+    const album: Album = {
+      id: id,
+      title: title,
+      artist:artist,
+      songs: songs,
+      URLImage: URL
+    }
 
-  //   this.albums.pipe(
-  //     take(1),
-  //     tap(albums => {
-  //       const updatedPlaceIndex = albums.findIndex(pl => pl.id === placeId);
-  //       const updatedPlaces = [...albums];
-  //       const oldPlace = updatedPlaces[updatedPlaceIndex];
-  //       updatedPlaces[updatedPlaceIndex] = new Album(
-  //         oldPlace.id,
-  //         title,
-  //         description,
-  //         oldPlace.imageUrl,
-  //         oldPlace.price,
-  //         oldPlace.availableFrom,
-  //         oldPlace.availableTo,
-  //         oldPlace.userId
-  //       );
-  //       this._places.next(updatedPlaces);
-  //     })
-  //   );
-  // }
+    const index = this.albumsList.map(x => x.id).indexOf(id);
+    this.albumsList[index] = album;
+    this.albumsData = this.albumsList;
+
+    var requestOptions = {
+      method: 'PUT',
+      headers: this.headers,
+      body: JSON.stringify(album)
+    };
+    fetch(this.apiURL + '/' +id, requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+  }
 }

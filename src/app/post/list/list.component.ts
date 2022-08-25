@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { getLocaleDateFormat } from '@angular/common';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { Album } from '../album';
 import { AlbumsService } from '../albums.service';
 
@@ -8,23 +9,33 @@ import { AlbumsService } from '../albums.service';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class ListComponent implements OnInit {
-  public albums: Album[] = [];
-  private albumSub: Subscription | undefined
+export class ListComponent implements OnInit, OnChanges {
+  public albums$:Observable<Album[]> | undefined;
+  private albumSub: Subscription | undefined;
 
-  constructor(private albumsServices: AlbumsService) { }
+
+  constructor(private albumsServices: AlbumsService) {
+    this.albums$ =albumsServices.albums;
+  }
 
   ngOnInit(): void {
-    this.albumSub = this.albumsServices.albums.subscribe(
-      albums => {
-        this.albums= albums;
-      }
-    )
+      this.getAllData();
   }
+
   ngOnDestroy(): void {
     if(this.albumSub) {
       this.albumSub.unsubscribe();
     }
+  }
+
+  getAllData(){
+    this.albumsServices.getAll();
+    console.log(this.albums$);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log("changes", changes);
+
   }
 
 }

@@ -14,16 +14,17 @@
     <p *ngIf=" artist && artist.invalid && (artist.dirty || artist.touched)" class="text-warning">An artist is required</p>
   </div>
   <div class="form__container">
-    <label>Songs</label>
+    <label>Songss</label>
     <input id="songs" type="text" formControlName="songs"/>
     <p *ngIf=" songs && songs.invalid && (songs.dirty || songs.touched)"  class="text-warning">At least a song is required</p>
   </div>
   <div class="form__container">
     <label>URL Image</label>
     <input id="image" type="text" formControlName="image"/>
+    <p *ngIf=" image && image.invalid && (image.dirty || image.touched)"  class="text-warning">Please enter a valid URL. </p>
   </div>
   <div class="form__container">
-    <button class="form__submit" type="submit" [disabled]="!form.valid">Change</button>
+    <button class="form__submit" type="submit" [disabled]="!form.valid || form.untouched">Change</button>
   </div>
 </form>
 <app-alert class="" *ngIf="isSubmit" [title]="album.title" action="created">

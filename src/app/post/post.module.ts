@@ -11,6 +11,7 @@ import { HeaderComponent } from './header/header.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AlertComponent } from './alert/alert.component'
+import { HttpClient, HttpClientModule, HttpHandler } from '@angular/common/http';
 
 
 
@@ -28,13 +29,15 @@ import { AlertComponent } from './alert/alert.component'
     CommonModule,
     FontAwesomeModule,
     PostRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+   HttpClientModule
   ],
   exports: [
     ItemComponent,
     ListComponent,
     EditListComponent,
     HeaderComponent
-  ]
+  ],
+  providers: [HttpClientModule, HttpClient]
 })
 export class PostModule { }
